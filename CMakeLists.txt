@@ -22,8 +22,6 @@ if(BUILD_TESTING)
   find_package(ament_cmake_pytest REQUIRED)
   ament_add_gtest(test_test_paths test/test_test_paths.cpp)
   target_link_libraries(test_test_paths ros_test_paths)
-  target_compile_definitions(test_test_paths PRIVATE
-    "ROS_TEST_PROJECT_SOURCE_DIR=\"${PROJECT_SOURCE_DIR}\"")
   ament_add_pytest_test(test_test_paths_py test/test_test_paths.py)
 endif()
 

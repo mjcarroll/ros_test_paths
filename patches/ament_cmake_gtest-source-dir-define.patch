@@ -1,0 +1,14 @@
+diff --git a/ament_cmake_gtest/cmake/ament_add_gtest_executable.cmake b/ament_cmake_gtest/cmake/ament_add_gtest_executable.cmake
+index 66a32e1..982592d 100644
+--- a/ament_cmake_gtest/cmake/ament_add_gtest_executable.cmake
++++ b/ament_cmake_gtest/cmake/ament_add_gtest_executable.cmake
+@@ -49,6 +49,9 @@ function(_ament_add_gtest_executable target)
+   # to add this target as a dependency to the "test" target
+   add_executable("${target}" ${ARG_UNPARSED_ARGUMENTS})
+   target_include_directories("${target}" SYSTEM PRIVATE "${GTEST_INCLUDE_DIRS}")
++  # Lets tests locate their package's source tree (see ros_test_paths).
++  target_compile_definitions("${target}" PRIVATE
++    "ROS_TEST_PROJECT_SOURCE_DIR=\"${PROJECT_SOURCE_DIR}\"")
+   if(NOT ARG_SKIP_LINKING_MAIN_LIBRARIES)
+     target_link_libraries("${target}" ${GTEST_MAIN_LIBRARIES})
+   endif()

@@ -12,8 +12,10 @@ Package root lookup order: env `ROS_TEST_SOURCE_DIR`; compile define `ROS_TEST_P
 ```cmake
 find_package(ros_test_paths REQUIRED)  # test_depend
 ament_add_gtest(my_test test/my_test.cpp)
-ros_test_paths_enable(my_test)
+target_link_libraries(my_test ros_test_paths::ros_test_paths)
 ```
+
+`ament_add_gtest` should define `ROS_TEST_PROJECT_SOURCE_DIR` for every test; that is a one-line change to `ament_cmake_gtest` (`patches/ament_cmake_gtest-source-dir-define.patch`, proposed upstream). Until it lands, call `ros_test_paths_enable(my_test)` instead, which adds the define and the include path.
 
 ## Bazel
 
