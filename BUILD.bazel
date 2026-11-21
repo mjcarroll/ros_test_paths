@@ -1,0 +1,38 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+package(default_visibility = ["//visibility:public"])
+
+# Test-only: depend on this from cc_test targets, never from production libraries.
+cc_library(
+    name = "ros_test_paths",
+    hdrs = ["include/ros_test_paths/test_paths.hpp"],
+    includes = ["include"],
+    testonly = True,
+    deps = ["@rules_cc//cc/runfiles"],
+)
+
+load("@rules_cc//cc:defs.bzl", "cc_test")
+cc_test(name = "probe", srcs = ["test/probe.cpp"], deps = ["@rules_cc//cc/runfiles"], data = ["//:package.xml"])
+exports_files(["package.xml"])
+
+load("@rules_python//python:defs.bzl", "py_library")
+load(":defs.bzl", "ros_cc_test", "ros_py_test")
+
+py_library(
+    name = "ros_test_paths_py",
+    srcs = ["python/ros_test_paths/__init__.py"],
+    imports = ["python"],
+    deps = ["@rules_python//python/runfiles"],
+)
+
+ros_py_test(
+    name = "test_test_paths_py",
+    srcs = ["test/test_test_paths.py"],
+)
+
+ros_cc_test(
+    name = "test_test_paths_cpp",
+    srcs = ["test/test_test_paths.cpp"],
+    data = ["test/test_test_paths.cpp"],
+    deps = ["@rosdistro//cc:googletest"],
+)
